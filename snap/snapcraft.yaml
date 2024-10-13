@@ -1,0 +1,40 @@
+name: influxdb2-gael
+version: "v2.7.10"
+base: core22
+summary: InfluxDB2
+description: |
+  InfluxDB2
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: amd64
+  - build-on: arm64
+
+license: "Apache-2.0"
+
+apps:
+  influxdb2-daemon:
+    command: influxdb2_daemon.sh
+    install-mode: disable
+    daemon: forking
+    plugs:
+    - network
+    - network-bind
+
+  influxdb2:
+    command: influxdb2.sh
+    plugs:
+    - network
+    - network-bind
+
+parts:
+  launchers:
+    plugin: dump
+    source: snap/local/launchers
+
+  influxdb:
+    plugin: dump
+    source: https://dl.influxdata.com/influxdb/releases/influxdb2_2.7.10-1_${SNAPCRAFT_TARGET_ARCH}.deb
+    source-type: deb
